@@ -30,10 +30,10 @@ exe = 		\
 all     :       $(exe)
 
 $(exe)  :       %:%.o
-	gcc -O2 -g -o $@ $^ -L../src -lzlog -lpthread -Wl,-rpath ../src
+	$(CC) $(LDFLAGS) -O2 -g -o $@ $^ -L../src -lzlog -Wl,-rpath ../src
 
 .c.o	:
-	gcc -O2 -g -Wall -D_GNU_SOURCE -o $@ -c $< -I. -I../src
+	$(CC) $(CFLAGS) -O2 -g -Wall -D_GNU_SOURCE -o $@ -c $< -I. -I../src
 
 clean	:
 	rm -f press.log* *.o $(exe)
