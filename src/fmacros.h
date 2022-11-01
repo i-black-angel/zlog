@@ -3,7 +3,7 @@
 
 #define _DEFAULT_SOURCE
 
-#if defined(__linux__) || defined(__OpenBSD__) || defined(_AIX)
+#if defined(__linux__) || defined(__OpenBSD__) || defined(_AIX) || defined(_QNX_)
 #ifndef _XOPEN_SOURCE
 #define _XOPEN_SOURCE 700
 #endif

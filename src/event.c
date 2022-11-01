@@ -20,7 +20,11 @@
 #include <sys/time.h>
 
 #include <sys/types.h>
+#ifdef _QNX_
+#include <sys/process.h>
+#else
 #include <sys/syscall.h>
+#endif
 
 #include "zc_defs.h"
 #include "event.h"
@@ -91,14 +95,16 @@ zlog_event_t *zlog_event_new(int time_cache_count)
 	a_event->tid_hex_str_len = sprintf(a_event->tid_hex_str, "%x", (unsigned int)a_event->tid);
 
 #ifdef __linux__
-	a_event->ktid = syscall(SYS_gettid);
+    a_event->ktid = syscall(SYS_gettid);
+#elif _QNX_
+    a_event->ktid = gettid();
 #elif __APPLE__
     uint64_t tid64;
     pthread_threadid_np(NULL, &tid64);
     a_event->tid = (pthread_t)tid64;
 #endif
 
-#if defined __linux__ || __APPLE__
+#if defined __linux__ || __APPLE__ || _QNX_
 	a_event->ktid_str_len = sprintf(a_event->ktid_str, "%u", (unsigned int)a_event->ktid);
 #endif
 
